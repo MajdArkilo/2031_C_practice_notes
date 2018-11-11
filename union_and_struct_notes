@@ -1,0 +1,105 @@
+/* 
+resources and references: (non of this is my work, I have just copied the most
+important info to summarize Unoins and Structures)
+
+https://it.toolbox.com/question/memory-layout-of-union-in-c-060710
+https://www.geeksforgeeks.org/c-language-2-gq/structure-union-gq/
+Wikipedia
+
+*/
+/* 
+Intro:
+
+In C and C++, untagged unions are expressed nearly exactly like 
+structures (structs), except that each data member begins at the same location 
+in memory. The data members, as in structures, need not be primitive values.
+
+Like a structure, all of the members of a union are by default public.
+The keywords private, public, and protected may be used inside a structure or
+a union in exactly the same way they are used inside a class for defining 
+private, public, and protected member access.
+
+A union is a class all of whose data members are mapped to the same address 
+within its object. The size of an object of a union is, therefore, the size 
+of its largest data member.
+
+In a structure, all of its data members are stored in contiguous memory 
+locations. The size of an object of a struct is, therefore, the size of the 
+sum of all its data members.
+
+*/
+#include <stdio.h>
+
+int main()
+{
+
+/*
+The total size of memory allocated for an Union will be always the size of 
+the largest/biggest member. In this case the largest/biggest member of an 
+union is ""C_struct"". The size of this struct is actually 5 bytes. But the 
+compilers will try to look for alignment options or padding options. 
+So if the word alignment option is enabled or padding is enabled, then the 
+total size of the ""C_struct"" will become 8 bytes.
+
+Henceforth the total size of the Union ""C_Union "" will be 8 bytes. 
+
+While accessing an Union, at any time one member can be accessed. The result 
+of the other member variables is undefined. 
+
+4-bytes will be for "int a" or "int x" depending on which variable you 
+are going to access during run time. Out of the remaining 4 bytes, 1-byte 
+will be used for ""char c"" or ""char p"" depending on the variable you are 
+accessing. The rest of the 3-bytes will be wasted. 
+
+In a union, at a time only one member is active. 
+
+The padding of 3-bytes or 1-byte is all dependent on the underlying machine 
+on which you are executing the code. 
+
+In a 32-bit machine or target processor, the word size will be 4-bytes, so 
+the padding will be 3-bytes to make it word aligned. 
+In a 16-bit machine or target processor, the word size will be 2-bytes, so 
+the padding will be 1-byte to make it word aligned. 
+
+By default most of the people have considered 32-bit machine and posted the 
+answers. So the size of union will be 8-bytes. 
+
+Contrast with a record (or structure), which could be defined to contain 
+a float and an integer; in a union, there is only one value at any given time.
+
+*/
+    int x;
+    union C_Union 
+    { 
+        int a; 
+        char c; 
+        struct C_struct 
+        { 
+            int x; 
+            char p; 
+        } cstruct; 
+    }cunion; 
+    x=sizeof(cunion); 
+    printf("%d",x); 
+    
+    /* The following code declares a structure */
+    struct node
+    {
+       int i;
+       float j;
+    };
+
+    /* The following code declares and defines an array s[] each 
+    element of which is a pointer to a structure of type node */
+    
+    /* a wrong description of the code would be:
+     An array, each element of which is a structure of type node.
+     */
+    struct node *s[10] ;
+    
+    
+    
+
+    return 0;
+}
+
